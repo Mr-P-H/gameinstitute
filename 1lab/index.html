@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа №1 - Современные Web-приложения</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin: 25px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .task {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .counter-section, .auth-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button.clear-btn {
+            background-color: #e74c3c;
+        }
+        
+        button.clear-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        button.success-btn {
+            background-color: #2ecc71;
+        }
+        
+        button.success-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .counter-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+        
+        .message {
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Лабораторная работа №1</h1>
+        <p class="status" id="pageStatus">Статус загрузки страницы: <span id="loadStatus">Загрузка...</span></p>
+        
+        <!-- Секция счетчика -->
+        <div class="task">
+            <h2>Часть 1: Счетчик</h2>
+            <p>Реализация счетчика с двумя разными подходами к обработке событий.</p>
+            
+            <div class="counter-section">
+                <button onclick="incrementCounter()">Увеличить (onclick)</button>
+                <div class="counter-value" id="counterValue">0</div>
+                <button id="decrementBtn">Уменьшить (addEventListener)</button>
+            </div>
+            <button onclick="resetCounter()" class="clear-btn">Сбросить счетчик</button>
+        </div>
+        
+        <!-- Секция аутентификации -->
+        <div class="task">
+            <h2>Часть 2: Форма аутентификации</h2>
+            <p>Форма с валидацией, сохранением в localStorage и автоподстановкой.</p>
+            
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="login">Логин:</label>
+                    <input type="text" id="login" name="login" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="message" id="authMessage"></div>
+                
+                <div class="auth-section">
+                    <button type="submit" class="success-btn">Войти</button>
+                    <button type="button" id="clearFormBtn" class="clear-btn">Очистить форму</button>
+                    <button type="button" id="loadSavedBtn">Загрузить сохраненные данные</button>
+                    <button type="button" id="clearStorageBtn">Очистить хранилище</button>
+                </div>
+            </form>
+        </div>
+        
+        <footer>
+            <p>Лабораторная работа по предмету "Современные средства Web-приложений"</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
